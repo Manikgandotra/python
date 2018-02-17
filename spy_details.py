@@ -29,5 +29,5 @@ class ChatMessage:
         self.time =datetime.now()
         self.sent_by_me = sent_by_me
 
-
+cm = ChatMessage('message','sent_by_me')
 

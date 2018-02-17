@@ -1,7 +1,7 @@
 from spy_details import spy,friends
 from steganography.steganography import Steganography
 from datetime import datetime
-from spy_details import  Spy, ChatMessage
+from spy_details import  Spy,ChatMessage
 print'helo'
 print'let\'s get started'
 
@@ -30,13 +30,8 @@ def add_status(c_s_m):
     return new_status
 
 def add_friends():
-    frnd = {
-        'name': '',
-        'age': 0,
-        'rating': 0.0,
-        'is_online': True
-    }
 
+    frnd = Spy(' ',' ',0,0.0)
     frnd.name = raw_input('WRITE YOUR FRND\'S NAME :')
     frnd_sal = raw_input('Mr. or Ms. :')
     frnd.name = frnd_sal + ' ' +frnd.name
@@ -67,24 +62,16 @@ def send_message():
     original_image = raw_input('WHAT IS THE NAME OF YOUR IMG ?')
     output_path = 'output.jpg'
     Steganography.encode(original_image,output_path,message)
-    new_chat = {
-        'message': message,
-        'time': datetime.now(),
-        'sent_by_me': True
-    }
-    friends[selected_frnd]['chats'].append(new_chat)
+    new_chat = ChatMessage('message','sent_by_me')
+    friends.append(new_chat)
     print 'MESSAGE ENCRYPTED'
 
 def read_message():
     chosen_frnd = select_frnd()
     output_path = raw_input('NAME OF IMAGE TO BE DECOTED')
     secret_text = Steganography.decode(output_path)
-    new_chat = {
-        'message': secret_text,
-        'time': datetime.now(),
-        'sent_by_me': False
-    }
-    friends[chosen_frnd]['chats'].append(new_chat)
+    new_chat = ChatMessage('message','sent_by_me')
+    friends.append(new_chat)
     print ' YOUR SECRET MESSAGE IS ' + secret_text
 
 def start_chat(spy_name,spy_age,spy_rating):
@@ -112,14 +99,8 @@ def start_chat(spy_name,spy_age,spy_rating):
 question = raw_input('ARE YOU A NEW USER? Y or N:')
 if question.upper()== 'N':
     print'we al ready have your detail'
-    start_chat(spy['name'],spy['age'],spy['rating'])
+    start_chat(spy.name,spy.age,spy.rating)
 elif question.upper()=='Y':
-    spy = {
-        'name': '',
-        'age': 0,
-        'rating': 0.0,
-        'is_online': True
-    }
 
     spy.name = raw_input('What should i call you')
     if len(spy.name)>3:
