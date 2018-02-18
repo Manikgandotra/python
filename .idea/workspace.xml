@@ -4,11 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/main.py" line="81" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="946a9925-1f70-4922-8b71-6f4137b64829" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/friends.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-    </list>
+    <list default="true" id="946a9925-1f70-4922-8b71-6f4137b64829" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
