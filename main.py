@@ -1,7 +1,7 @@
-from spy_details import spy,friends
+from spy_details import spy, friends, chats
 from steganography.steganography import Steganography
 from datetime import datetime
-from spy_details import  Spy,ChatMessage
+from spy_details import Spy, ChatMessage
 import csv
 
 print'helo'
@@ -12,11 +12,24 @@ def load_friends():
         reader = csv.reader(friends_data)
 
         for row in reader:
-            spy = Spy(name=row[0], salutation=row[1], age =(row[2]) ,rating =(row[3]))
+            spy = Spy(row[0],row[1],row[2],row[3])
+
             friends.append(spy)
 
 
 load_friends()
+
+def load_chats():
+    with open('chats.csv','rb') as chats_data:
+        reader = csv.reader(chats_data)
+
+        for row in reader:
+            cm = ChatMessage(row[0],row[1])
+            chats.append(cm)
+
+load_chats()
+
+
 
 STATUS_MESSAGES = ['URGENT CALL ONLY','CAN\'T TALK SC ONLY','SLEEPING','BUSY']
 
@@ -60,7 +73,7 @@ def add_friends():
 
 
     else:
-        print 'frnd with these values can not be added'
+        print 'frnd with these values can not be a0dded'
 
 
     return len(friends)
@@ -82,14 +95,20 @@ def send_message():
     new_chat = ChatMessage('message','sent_by_me')
     friends.append(new_chat)
     print 'MESSAGE ENCRYPTED'
+    with open('chats.csv', 'a') as chats_data:
+        writer = csv.writer(chats_data)
+        writer.writerow(message)
 
 def read_message():
     chosen_frnd = select_frnd()
-    output_path = raw_input('NAME OF IMAGE TO BE DECOTED')
+    output_path = raw_input('NAME OF IMAGE TO BE DECOTED:')
     secret_text = Steganography.decode(output_path)
     new_chat = ChatMessage('message','sent_by_me')
     friends.append(new_chat)
     print ' YOUR SECRET MESSAGE IS ' + secret_text
+    with open('chats.csv', 'a') as chats_data:
+        writer = csv.writer(chats_data)
+        writer.writerow(message)
 
 def start_chat(spy_name,spy_age,spy_rating):
 
@@ -112,12 +131,94 @@ def start_chat(spy_name,spy_age,spy_rating):
          else:
              print 'Invalid choice'
 
+def question():
+    Question = raw_input('ARE YOU A NEW USER? Y or N:')
+    if Question.upper()== 'N':
+        print'we al ready have your detail'
+        start_chat(spy.name,spy.age,spy.rating)
+    elif Question.upper()=='Y':
 
-question = raw_input('ARE YOU A NEW USER? Y or N:')
-if question.upper()== 'N':
+        spy.name = raw_input('What should i call you')
+        if len(spy.name)>3:
+            print'Welcome'+ spy['name'] +' Glad to meet you'
+            spy_salutation = raw_input('what shoula i call you ? Mr. or Ms.')
+            spy.name = spy_salutation + spy.name
+            print 'Alright' + spy.name + ' I\'d like to know more about you'
+            spy.age = input('What is your age')
+            if spy.age>12 and spy.age<55:
+                print 'Spy, your age is prefect'
+                spy.rating=input('what is your rating')
+                if spy.rating>=5.0:
+                    print 'Great Spy'
+                elif spy.rating<5.0 and spy.rating>=4.5:
+                    print 'Nice Spy'
+                elif spy.rating<4.5 and spy.rating>=3.5:
+                    print 'Fine Spy'
+                else:
+                    print 'Useless Spy'
+                spy_is_online=True
+                print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
+
+                start_chat(spy.name,spy.age,spy.rating)
+
+            else:
+                print 'your age is not vaild to be spy'
+
+        else:
+            print 'plz enter a valid name'
+    else:
+        print'Invalid entry'
+        question()
+
+
+
+
+
+Question = raw_input('ARE YOU A NEW USER? Y or N:')
+if Question.upper()== 'N':
     print'we al ready have your detail'
     start_chat(spy.name,spy.age,spy.rating)
-elif question.upper()=='Y':
+elif Question.upper()=='Y':
+
+  spy.name = raw_input('What should i call you')
+  if len(spy.name)>3:
+      print'Welcome'+ spy['name'] +' Glad to meet you'
+      spy_salutation = raw_input('what shoula i call you ? Mr. or Ms.')
+      spy.name = spy_salutation + spy.name
+      print 'Alright' + spy.name + ' I\'d like to know more about you'
+      spy.age = input('What is your age')
+      if spy.age>12 and spy.age<55:
+          print 'Spy, your age is prefect'
+          spy.rating=input('what is your rating')
+          if spy.rating>=5.0:
+              print 'Great Spy'
+          elif spy.rating<5.0 and spy.rating>=4.5:
+              print 'Nice Spy'
+          elif spy.rating<4.5 and spy.rating>=3.5:
+              print 'Fine Spy'
+          else:
+              print 'Useless Spy'
+          spy_is_online=True
+          print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
+          start_chat(spy.name,spy.age,spy.rating)
+
+      else:
+          print 'your age is not vaild to be spy'
+
+  else:
+      print 'plz enter a valid name'
+else:
+    print'Invalid entry'
+    question()
+
+
+
+
+Question = raw_input('ARE YOU A NEW USER? Y or N:')
+if Question.upper()== 'N':
+    print'we al ready have your detail'
+    start_chat(spy.name,spy.age,spy.rating)
+elif Question.upper()=='Y':
 
     spy.name = raw_input('What should i call you')
     if len(spy.name)>3:
@@ -137,14 +238,16 @@ elif question.upper()=='Y':
                 print 'Fine Spy'
             else:
                 print 'Useless Spy'
-            spy_is_online=True
-            print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
+                spy_is_online=True
+                print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
 
-            start_chat(spy.name,spy.age,spy.rating)
+                start_chat(spy.name,spy.age,spy.rating)
 
         else:
             print 'your age is not vaild to be spy'
+
     else:
-        print 'plz enter a valid name'
+       print 'plz enter a valid name'
 else:
     print'Invalid entry'
+    question()
