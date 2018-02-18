@@ -2,8 +2,21 @@ from spy_details import spy,friends
 from steganography.steganography import Steganography
 from datetime import datetime
 from spy_details import  Spy,ChatMessage
+import csv
+
 print'helo'
 print'let\'s get started'
+
+def load_friends():
+    with open('friends.csv','rb') as friends_data:
+        reader = csv.reader(friends_data)
+
+        for row in reader:
+            spy = Spy(name=row[0], salutation=row[1], age =(row[2]) ,rating =(row[3]))
+            friends.append(spy)
+
+
+load_friends()
 
 STATUS_MESSAGES = ['URGENT CALL ONLY','CAN\'T TALK SC ONLY','SLEEPING','BUSY']
 
@@ -37,9 +50,13 @@ def add_friends():
     frnd.name = frnd_sal + ' ' +frnd.name
     frnd.age = input('WRITE THE AGE OF FRND:')
     frnd.rating = input('write the rating of frnd:')
+    frnd.is_online = True
 
     if len(frnd.name)>2 and 50>frnd.age>12 and  frnd.rating >= spy.rating:
         friends.append(frnd)
+        with open('friends.csv', 'a') as friends_data:
+            writer = csv.writer(friends_data)
+            writer.writerow([frnd.name,frnd.age,frnd.rating,frnd.is_online])
 
 
     else:
