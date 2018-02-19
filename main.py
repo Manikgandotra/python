@@ -1,11 +1,12 @@
 from spy_details import spy, friends, chats
 from steganography.steganography import Steganography
 from datetime import datetime
-from spy_details import Spy, ChatMessage
+from spy_details import Spy, ChatMessage, friend
 import csv
+from termcolor import colored
 
-print'helo'
-print'let\'s get started'
+print( colored('Helo \nlet\'s get started','cyan', attrs=['dark','bold']))
+
 
 def load_friends():
     with open('friends.csv','rb') as friends_data:
@@ -29,7 +30,14 @@ def load_chats():
 
 load_chats()
 
+def load_history():
+    with open('history.csv','rb') as history_data:
+        reader = csv.reader(history_data)
+        for row in reader:
 
+            history.append(load_chats())
+
+load_history()
 
 STATUS_MESSAGES = ['URGENT CALL ONLY','CAN\'T TALK SC ONLY','SLEEPING','BUSY']
 
@@ -103,19 +111,28 @@ def read_message():
     chosen_frnd = select_frnd()
     output_path = raw_input('NAME OF IMAGE TO BE DECOTED:')
     secret_text = Steganography.decode(output_path)
-    new_chat = ChatMessage('message','sent_by_me')
-    friends.append(new_chat)
-    print ' YOUR SECRET MESSAGE IS ' + secret_text
+    print 'THE SECRET MESSAGE IS :- '
+    print ( colored(secret_text,'red'))
+    new_chat = (secret_text.upper()).split()
     with open('chats.csv', 'a') as chats_data:
         writer = csv.writer(chats_data)
-        writer.writerow(message)
+        writer.writerow(secret_text)
+
+def Chat_History():
+    Chat = select_frnd()
+    print '\n'
+    for chat in friend.chat:
+        if chat.sent_by_me:
+            print '[%s]  %s' %('you said:', chat.message)
+        else:
+            print '[%s]  %s' %(friend.name,chat.message)
 
 def start_chat(spy_name,spy_age,spy_rating):
 
     current_status_message = None
     show_menu = True
     while show_menu:
-         menu_choice = input('WHAT DO YOU WANT TO DO ? \n 1.Add a Status \n 2.Add a friend \n 3. Send a message \n 4. Read A Message \n 0. Exit \n')
+         menu_choice = input('WHAT DO YOU WANT TO DO ? \n 1.Add a Status \n 2.Add a friend \n 3. Send a message \n 4. Read A Message \n 5. Your talks \n 0. Exit \n')
          if menu_choice == 1:
               user_status_message = add_status(current_status_message)
               print 'YOUR NEW STATUS IS UPDATED TO' + str(user_status_message)
@@ -126,6 +143,8 @@ def start_chat(spy_name,spy_age,spy_rating):
              send_message()
          elif menu_choice == 4:
              read_message()
+         elif menu_choice ==5:
+             Chat_History()
          elif menu_choice ==0:
              show_menu = False
          else:
@@ -134,13 +153,18 @@ def start_chat(spy_name,spy_age,spy_rating):
 def question():
     Question = raw_input('ARE YOU A NEW USER? Y or N:')
     if Question.upper()== 'N':
-        print'we al ready have your detail'
-        start_chat(spy.name,spy.age,spy.rating)
+
+        login = raw_input('FOR SPYCHAT YOU MUST LOGIN \nUSERNAME PLZ:')
+        print 'HELLO'+' '+ login +' Lets talk secretly'
+
+        start_chat(spy.name, spy.age, spy.rating)
+
+
     elif Question.upper()=='Y':
 
         spy.name = raw_input('What should i call you')
         if len(spy.name)>3:
-            print'Welcome'+ spy['name'] +' Glad to meet you'
+            print'Welcome'+ spy.name +' Glad to meet you'
             spy_salutation = raw_input('what shoula i call you ? Mr. or Ms.')
             spy.name = spy_salutation + spy.name
             print 'Alright' + spy.name + ' I\'d like to know more about you'
@@ -157,7 +181,7 @@ def question():
                 else:
                     print 'Useless Spy'
                 spy_is_online=True
-                print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
+                print 'Authentication completed. Welcome ' + spy.name + 'Age:-' + str(spy.age) + ' and Rating :- ' + str(spy.rating) + ' Proud to have you onboard '+ 'Your Username is :-' + spy.name
 
                 start_chat(spy.name,spy.age,spy.rating)
 
@@ -176,16 +200,16 @@ def question():
 
 Question = raw_input('ARE YOU A NEW USER? Y or N:')
 if Question.upper()== 'N':
-    print'we al ready have your detail'
+    login = raw_input('FOR SPYCHAT YOU MUST LOGIN \nUSERNAME PLZ:')
+    print 'HELLO '+ login +' Lets talk secretly'
     start_chat(spy.name,spy.age,spy.rating)
 elif Question.upper()=='Y':
-
   spy.name = raw_input('What should i call you')
   if len(spy.name)>3:
-      print'Welcome'+ spy['name'] +' Glad to meet you'
-      spy_salutation = raw_input('what shoula i call you ? Mr. or Ms.')
+      print 'Welcome'+ spy.name +' Glad to meet you'
+      spy_salutation = raw_input('what shoula i call you ? Mr. or Ms. ')
       spy.name = spy_salutation + spy.name
-      print 'Alright' + spy.name + ' I\'d like to know more about you'
+      print 'Alright ' + spy.name + ' I\'d like to know more about you'
       spy.age = input('What is your age')
       if spy.age>12 and spy.age<55:
           print 'Spy, your age is prefect'
@@ -199,7 +223,7 @@ elif Question.upper()=='Y':
           else:
               print 'Useless Spy'
           spy_is_online=True
-          print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
+          print 'Authentication completed. Welcome '+ spy.name +' Age:-' + str(spy.age) + ' and Rating :- ' + str(spy.rating) + ' Proud to have you onboard '+' Your Username is:- '+ spy.name
           start_chat(spy.name,spy.age,spy.rating)
 
       else:
@@ -214,40 +238,3 @@ else:
 
 
 
-Question = raw_input('ARE YOU A NEW USER? Y or N:')
-if Question.upper()== 'N':
-    print'we al ready have your detail'
-    start_chat(spy.name,spy.age,spy.rating)
-elif Question.upper()=='Y':
-
-    spy.name = raw_input('What should i call you')
-    if len(spy.name)>3:
-        print'Welcome'+ spy['name'] +' Glad to meet you'
-        spy_salutation = raw_input('what shoula i call you ? Mr. or Ms.')
-        spy.name = spy_salutation + spy.name
-        print 'Alright' + spy.name + ' I\'d like to know more about you'
-        spy.age = input('What is your age')
-        if spy.age>12 and spy.age<55:
-            print 'Spy, your age is prefect'
-            spy.rating=input('what is your rating')
-            if spy.rating>=5.0:
-                print 'Great Spy'
-            elif spy.rating<5.0 and spy.rating>=4.5:
-                print 'Nice Spy'
-            elif spy.rating<4.5 and spy.rating>=3.5:
-                print 'Fine Spy'
-            else:
-                print 'Useless Spy'
-                spy_is_online=True
-                print 'Authentication complete. Welcome '+ spy.name + 'age:' + str(spy.age) + ' and rating of:' + str(spy.rating) + ' Proud to have you onboard'
-
-                start_chat(spy.name,spy.age,spy.rating)
-
-        else:
-            print 'your age is not vaild to be spy'
-
-    else:
-       print 'plz enter a valid name'
-else:
-    print'Invalid entry'
-    question()

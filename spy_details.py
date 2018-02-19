@@ -1,5 +1,7 @@
 from datetime import datetime
 
+
+
 class Spy:
     def __init__(self,name,salutation,age,rating):
         self.name = name
@@ -7,17 +9,22 @@ class Spy:
         self.age = age
         self.rating = rating
         self.is_online = True
-        self.chats = []
         self.current_status_message = None
 
 
 spy = Spy('manik','Mr.', 21,5.5 ,)
 
+class friend:
+    def __init__(self,name,age,rating,chat):
+        self.name = name
+        self.age = age
+        self.rating = rating
+        self.chat = chat
 
-friend_one = Spy('Pranav','Mr', 20,6.5)
-friend_two = Spy('Harsh','Mr', 20,7.5)
-friend_three= Spy('Akshay','Mr', 20,9.5)
-friend_four = Spy('Satyam','Mr', 19,5.9)
+friend_one = friend('Pranav','Mr', 20,6.5)
+friend_two = friend('Harsh','Mr', 20,7.5)
+friend_three= friend('Akshay','Mr', 20,9.5)
+friend_four = friend('Satyam','Mr', 19,5.9)
 
 
 
@@ -38,3 +45,4 @@ chats_four= ChatMessage('message','sent_by_me')
 
 
 chats = [chats_one,chats_two,chats_three,chats_four]
+
